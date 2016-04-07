@@ -14,3 +14,12 @@ class Category(models.Model):
     def __str__(self):
         return self.title
 
+
+class Feedback(models.Model):
+    name = models.CharField(max_length=100)
+    subject = models.CharField(max_length=150)
+    email = models.EmailField()
+    text = models.TextField(max_length=1000)
+
+    def __str__(self):
+        return self.subject[:50]
