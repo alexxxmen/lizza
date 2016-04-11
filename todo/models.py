@@ -44,7 +44,7 @@ class Product(models.Model):
     pub_date = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
     count = models.IntegerField(default=0, verbose_name='Количество товара')
-    category = models.ForeignKey(Category, on_delete=models.SET_NULL, verbose_name='category')
+    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, verbose_name='category')
     img = models.ImageField(upload_to='images', verbose_name='Картинка товара')
     slug = models.SlugField(max_length=100, unique=True, verbose_name='slug')
     status = models.CharField(max_length=1, choices=PRODUCT_STATUS, default='O', verbose_name='Статус товара')
@@ -67,6 +67,5 @@ class Order(models.Model):
     status = models.CharField(max_length=1, choices=ORDER_STATUS, default='N', verbose_name='Статус заказа')
     text = models.CharField(max_length=300, blank=True, verbose_name='Дополнение')
     product = models.ManyToManyField(Product,
-                                     on_delete=models.SET_NULL,
                                      related_name='products',
                                      related_query_name='product')
