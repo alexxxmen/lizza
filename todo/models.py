@@ -7,7 +7,7 @@ from phonenumber_field.modelfields import PhoneNumberField
 
 class Category(models.Model):
     title = models.CharField(max_length=100, verbose_name='Название категории')
-    desc = models.CharField(max_length=300, verbose_name='Описание категории')
+    desc = models.CharField(max_length=300, blank=True, null=True, verbose_name='Описание категории')
 
     # возможные поля:
     # - картинка
@@ -31,7 +31,7 @@ class Feedback(models.Model):
     status = models.CharField(max_length=1, choices=FEEDBACK_STATUS, default='F', verbose_name='Статус отзыва')
 
     def __unicode__(self):
-        return self.subject[:50]
+        return self.subject[:20]
 
 
 class Product(models.Model):
@@ -47,7 +47,7 @@ class Product(models.Model):
     modified = models.DateTimeField(auto_now=True)
     count = models.IntegerField(default=0, verbose_name='Количество товара')
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, verbose_name='category')
-    img = models.ImageField(upload_to='images', verbose_name='Картинка товара')
+    img = models.ImageField(upload_to='images', blank=True, verbose_name='Картинка товара')
     slug = models.SlugField(max_length=100, unique=True, verbose_name='slug')
     status = models.CharField(max_length=1, choices=PRODUCT_STATUS, default='O', verbose_name='Статус товара')
 
@@ -61,7 +61,6 @@ class Order(models.Model):
         ('R', 'Отказ'),
         ('F', 'Обработанный'),
     )
-    order_id = models.PositiveIntegerField(unique=True, verbose_name='order_id')
     name = models.CharField(max_length=100, verbose_name='Имя заказчика')
     count = models.PositiveSmallIntegerField(default=0, verbose_name='Количество')
     phone = PhoneNumberField(null=True, verbose_name='Номер телефона')
@@ -71,3 +70,6 @@ class Order(models.Model):
     product = models.ManyToManyField(Product,
                                      related_name='products',
                                      related_query_name='product')
+
+    def __unicode__(self):
+        return 'Order # %s' % self.pk
