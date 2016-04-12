@@ -25,18 +25,24 @@ class Feedback(models.Model):
         verbose_name = 'Письмо'
         verbose_name_plural = 'Письма'
 
+    NEW = 'N'
+    TREATED = 'T'
     FEEDBACK_STATUS = (
-        ('N', 'Новый'),
-        ('F', 'Обработанный'),
+        (NEW, 'Новое'),
+        (TREATED, 'Обработанное'),
     )
-    name = models.CharField(max_length=100, verbose_name='Ваше Имя')
+    name = models.CharField(max_length=100, verbose_name='Имя')
     subject = models.CharField(max_length=150, verbose_name='Тема письма')
     email = models.EmailField(verbose_name='Почта')
     phone = PhoneNumberField(blank=True, null=True, verbose_name='Номер телефона')
     text = models.TextField(max_length=1000, verbose_name='Текст письма')
     create_date = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
     modified = models.DateTimeField(auto_now=True, verbose_name='Дата изминения')
-    status = models.CharField(max_length=1, choices=FEEDBACK_STATUS, default='F', verbose_name='Статус')
+    status = models.CharField(max_length=1, choices=FEEDBACK_STATUS, default=NEW, verbose_name='Статус')
+
+    def short_text(self):
+        return self.text[:145]+'...'
+    short_text.short_description = 'Содержимое письма'
 
     def __unicode__(self):
         return self.subject[:20]

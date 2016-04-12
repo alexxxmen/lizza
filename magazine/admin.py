@@ -50,7 +50,46 @@ class ProductAdmin(admin.ModelAdmin):
 
     actions = ['make_instock', 'make_not_available', 'make_on_order']
 
+
+class CategoryAdmin(admin.ModelAdmin):
+    list_display = ('title', 'desc',)
+    list_display_links = ('title',)
+    search_fields = ['title', 'desc']
+
+
+class FeedbackAdmin(admin.ModelAdmin):
+    list_display = ('subject', 'name', 'short_text', 'create_date', 'modified', 'status')
+    list_display_links = ('subject',)
+    search_fields = ['subject', 'name', 'text', 'status', 'create_date', 'modified']
+    list_filter = ['create_date', 'modified', 'status']
+    readonly_fields = ('create_date', 'modified')
+    fieldsets = [
+        ('Данные для ответа', {'fields': [('name',), ('email', 'phone')]}),
+        ('Письмо', {'fields': [('subject',),('text',)]}),
+        ('Дополнительно', {'fields': [('create_date', 'modified', 'status')]})
+    ]
+
+    def make_new(self, request, queryset):
+        updated = queryset.update(status=Feedback.NEW)
+        if updated == 1:
+            message_b = '1-го письма был'
+        else:
+            message_b = '%s писем был' %updated
+        self.message_user(request, 'Статус %s успешно изменен на \'Новое\'' % message_b)
+    make_new.short_description = 'Пометить как новое'
+
+    def make_treated(self, request, queryset):
+        updated = queryset.update(status=Feedback.TREATED)
+        if updated == 1:
+            message_b = '1-го письма был'
+        else:
+            message_b = '%s писем был' %updated
+        self.message_user(request, 'Статус %s успешно изменен на \'Обработанное\'' % message_b)
+    make_treated.short_description = 'Пометить как Обработанное'
+
+    actions = ['make_new', 'make_treated']
+
 admin.site.register(Order)
 admin.site.register(Product, ProductAdmin)
-admin.site.register(Category)
-admin.site.register(Feedback)
+admin.site.register(Category, CategoryAdmin)
+admin.site.register(Feedback, FeedbackAdmin)
