@@ -2,6 +2,7 @@
 # from __future__ import unicode_literals
 
 from django.db import models
+from phonenumber_field.modelfields import PhoneNumberField
 
 
 class Category(models.Model):
@@ -23,6 +24,7 @@ class Feedback(models.Model):
     name = models.CharField(max_length=100, verbose_name='Имя пользователя')
     subject = models.CharField(max_length=150, verbose_name='Тема отзыва')
     email = models.EmailField(verbose_name='Почта пользователя')
+    phone = PhoneNumberField(blank=True, null=True, verbose_name='Номер телефона')
     text = models.TextField(max_length=1000, verbose_name='Текст отзыва')
     create_date = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания отзыва')
     modified = models.DateTimeField(auto_now=True, verbose_name='Дата изминения отзыва')
@@ -38,7 +40,7 @@ class Product(models.Model):
         ('N', 'Нет в наличии'),
         ('O', 'Под заказ'),
     )
-    product_id = models.PositiveIntegerField(unique=True, verbose_name='product_id')
+    product_code = models.CharField(max_length=30, null=True, unique=True, verbose_name='product_id')
     name = models.CharField(max_length=100, verbose_name='Название товара')
     desc = models.CharField(max_length=500, blank=True, verbose_name='Описание товара')
     pub_date = models.DateTimeField(auto_now_add=True)
@@ -62,8 +64,8 @@ class Order(models.Model):
     order_id = models.PositiveIntegerField(unique=True, verbose_name='order_id')
     name = models.CharField(max_length=100, verbose_name='Имя заказчика')
     count = models.PositiveSmallIntegerField(default=0, verbose_name='Количество')
-    telephone = models.CharField(max_length=15, verbose_name='Номер телефона')
-    email = models.EmailField(verbose_name='Почта')
+    phone = PhoneNumberField(null=True, verbose_name='Номер телефона')
+    email = models.EmailField(blank=True, verbose_name='Почта')
     status = models.CharField(max_length=1, choices=ORDER_STATUS, default='N', verbose_name='Статус заказа')
     text = models.CharField(max_length=300, blank=True, verbose_name='Дополнение')
     product = models.ManyToManyField(Product,
