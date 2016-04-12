@@ -1,6 +1,6 @@
 # -*- coding:utf-8 -*-
 from django.contrib import admin
-from todo.models import Order, Category, Product, Feedback
+from magazine.models import Order, Category, Product, Feedback
 
 
 class ProductAdmin(admin.ModelAdmin):
@@ -15,9 +15,10 @@ class ProductAdmin(admin.ModelAdmin):
                    'status', 'count']
     readonly_fields = ('create_date', 'modified')
     fieldsets = [
-        ('Главное', {'fields': [('name', 'slug'), ('product_code','img')]}),
-        ('Детально', {'fields': [('category', 'status'), ('count',)]}),
-        ('Дополнительно', {'fields': [('short_desc', 'full_desc'), ('create_date', 'modified')]})
+        ('Главное', {'fields': [('name', 'img'), ('product_code',)]}),
+        ('Детально', {'fields': [('category', 'status'), ('count',),
+                                 ('short_desc', 'full_desc')]}),
+        ('Дополнительно', {'fields': [('slug',), ('create_date', 'modified')], 'classes': ['collapse']}),
     ]
 
     def make_instock(self, request, queryset):
@@ -52,3 +53,4 @@ class ProductAdmin(admin.ModelAdmin):
 admin.site.register(Order)
 admin.site.register(Product, ProductAdmin)
 admin.site.register(Category)
+admin.site.register(Feedback)
