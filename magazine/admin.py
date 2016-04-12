@@ -17,12 +17,12 @@ class ProductAdmin(admin.ModelAdmin):
     fieldsets = [
         ('Главное', {'fields': [('name', 'img'), ('product_code',)]}),
         ('Детально', {'fields': [('category', 'status'), ('count',),
-                                 ('short_desc', 'full_desc')]}),
+                                 ('short_desc',), ('full_desc',)]}),
         ('Дополнительно', {'fields': [('slug',), ('create_date', 'modified')], 'classes': ['collapse']}),
     ]
 
     def make_instock(self, request, queryset):
-        updated = queryset.update(status='S')
+        updated = queryset.update(status=Product.IN_STOCK)
         if updated == 1:
             message_b = '1-й записи был'
         else:
@@ -31,7 +31,7 @@ class ProductAdmin(admin.ModelAdmin):
     make_instock.short_description = 'Товар есть в наличии'
 
     def make_not_available(self, request, queryset):
-        updated = queryset.update(status='N')
+        updated = queryset.update(status=Product.NOT_AVAILABLE)
         if updated == 1:
             message_b = '1-й записи был'
         else:
@@ -40,7 +40,7 @@ class ProductAdmin(admin.ModelAdmin):
     make_not_available.short_description = 'Товара нет в продаже'
 
     def make_on_order(self, request, queryset):
-        updated = queryset.update(status='O')
+        updated = queryset.update(status=Product.ORDER)
         if updated == 1:
             message_b = '1-й записи был'
         else:
@@ -65,7 +65,7 @@ class FeedbackAdmin(admin.ModelAdmin):
     readonly_fields = ('create_date', 'modified')
     fieldsets = [
         ('Данные для ответа', {'fields': [('name',), ('email', 'phone')]}),
-        ('Письмо', {'fields': [('subject',),('text',)]}),
+        ('Письмо', {'fields': [('subject',), ('text',)]}),
         ('Дополнительно', {'fields': [('create_date', 'modified', 'status')]})
     ]
 
@@ -89,7 +89,51 @@ class FeedbackAdmin(admin.ModelAdmin):
 
     actions = ['make_new', 'make_treated']
 
-admin.site.register(Order)
+
+class OrderAdmin(admin.ModelAdmin):
+    list_display = ('order_id', 'data', 'count', 'modified', 'status')
+    list_display_links = ('order_id',)
+    search_fields = ['name', 'modified']
+    list_filter = ['status', 'modified']
+    readonly_fields = ('create_date', 'modified')
+    fieldsets = [
+        ('Информация для связи', {'fields': [('name', 'phone'), ('email',)]}),
+        ('Заказ', {'fields': [('product', 'count'), ('text',)]}),
+        ('Дополнительно', {'fields': [('create_date', 'modified', 'status')],
+                           'classes': ['collapse']})
+    ]
+
+    def make_new(self, request, queryset):
+        updated = queryset.update(status=Order.NEW)
+        if updated == 1:
+            self.message_user(request, '1 заказ был успешно помечен как \'Новый\'')
+        elif (str(updated)[1:] in ['2', '3', '4'] or updated in [2, 3, 4]) and (updated < 5 or updated > 20):
+            self.message_user(request, '%s заказа были успешно помечены как \'Новые\'' % updated)
+        else:
+            self.message_user(request, '%s заказов было успешно помечено как \'Новые\'' % updated)
+    make_new.short_description = 'Пометить как новый'
+
+    def make_refuse(self, request, queryset):
+        updated = queryset.update(status=Order.REFUSE)
+        if updated == 1:
+            self.message_user(request, 'По 1 заказу было успешно отказано')
+        else:
+            self.message_user(request, 'По %s заказам было успешно отказано' % updated)
+    make_refuse.short_description = 'Пометить как отказ'
+
+    def make_treated(self, request, queryset):
+        updated = queryset.update(status=Order.TREATED)
+        if updated == 1:
+            self.message_user(request, '1 заказ был успешно помечен как \'Обработанный\'')
+        elif (str(updated)[1:] in ['2', '3', '4'] or updated in [2, 3, 4]) and (updated < 5 or updated > 20):
+            self.message_user(request, '%s заказа были успешно помечены как \'Обработанные\'' % updated)
+        else:
+            self.message_user(request, '%s заказов было успешно помечено как \'Обработанные\'' % updated)
+    make_treated.short_description = 'Пометить как обработанный'
+
+    actions = ['make_new', 'make_refuse', 'make_treated']
+
+admin.site.register(Order, OrderAdmin)
 admin.site.register(Product, ProductAdmin)
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Feedback, FeedbackAdmin)
