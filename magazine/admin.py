@@ -10,8 +10,8 @@ class ProductAdmin(admin.ModelAdmin):
                     'create_date', 'category', 'modified', 'status')
     list_display_links = ('name',)
     search_fields = ['name', 'product_code', 'create_date',
-                     'modified', 'status', 'category']
-    list_filter = ['create_date', 'category', 'modified',
+                     'modified', 'status', 'category__title']
+    list_filter = ['create_date', 'category__title', 'modified',
                    'status', 'count']
     readonly_fields = ('create_date', 'modified')
     fieldsets = [

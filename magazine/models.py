@@ -10,7 +10,7 @@ class Category(models.Model):
         verbose_name = 'Категория'
         verbose_name_plural = 'Категории'
 
-    title = models.CharField(max_length=100, verbose_name='Название')
+    title = models.CharField(max_length=100, verbose_name='Название категории')
     desc = models.TextField(max_length=300, blank=True, null=True, verbose_name='Описание')
 
     # возможные поля:
