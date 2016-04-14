@@ -2,7 +2,6 @@
 # from __future__ import unicode_literals
 
 from django.db import models
-from phonenumber_field.modelfields import PhoneNumberField
 
 
 class Category(models.Model):
@@ -34,7 +33,7 @@ class Feedback(models.Model):
     name = models.CharField(max_length=100, verbose_name='Имя')
     subject = models.CharField(max_length=150, verbose_name='Тема письма')
     email = models.EmailField(verbose_name='Почта')
-    phone = PhoneNumberField(blank=True, null=True, verbose_name='Номер телефона')
+    phone = models.CharField(max_length=14, blank=True, null=True, verbose_name='Номер телефона')
     text = models.TextField(max_length=1000, verbose_name='Текст письма')
     create_date = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
     modified = models.DateTimeField(auto_now=True, verbose_name='Дата изминения')
@@ -92,7 +91,7 @@ class Order(models.Model):
     )
     name = models.CharField(max_length=100, verbose_name='Имя заказчика')
     count = models.PositiveSmallIntegerField(default=0, verbose_name='Количество')
-    phone = PhoneNumberField(null=True, verbose_name='Номер телефона')
+    phone = models.CharField(max_length=14, null=True, verbose_name='Номер телефона')
     email = models.EmailField(blank=True, verbose_name='Почта')
     status = models.CharField(max_length=1, choices=ORDER_STATUS, default=NEW, verbose_name='Статус заказа')
     create_date = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
