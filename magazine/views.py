@@ -4,4 +4,5 @@ from django.shortcuts import render
 
 
 def home(request):
-    pass
+    context = {}
+    return render(request, 'magazine/index.html', context)
