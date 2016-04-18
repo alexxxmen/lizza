@@ -1,6 +1,38 @@
 # -*- coding:utf-8 -*-
 from django.contrib import admin
 from magazine.models import Order, Category, Product, Feedback
+from django import forms
+from ckeditor.widgets import CKEditorWidget
+from ckeditor_uploader.widgets import CKEditorUploadingWidget
+
+
+class ProductAdminForm(forms.ModelForm):
+    class Meta:
+        model = Product
+        fields = '__all__'
+
+    short_desc = forms.CharField(widget=CKEditorWidget())
+    # short_desc = forms.CharField(widget=CKEditorUploadingWidget())
+    full_desc = forms.CharField(widget=CKEditorWidget())
+    full_desc = forms.CharField(widget=CKEditorUploadingWidget())
+
+
+class CategoryAdminForm(forms.ModelForm):
+    class Meta:
+        model = Category
+        fields = '__all__'
+
+    desc = forms.CharField(widget=CKEditorWidget())
+    desc = forms.CharField(widget=CKEditorUploadingWidget())
+
+
+class FeedbackAdminForm(forms.ModelForm):
+    class Meta:
+        model = Feedback
+        fields = '__all__'
+
+    text = forms.CharField(widget=CKEditorWidget())
+    # text = forms.CharField(widget=CKEditorUploadingWidget())
 
 
 class ProductAdmin(admin.ModelAdmin):
@@ -20,6 +52,8 @@ class ProductAdmin(admin.ModelAdmin):
                                  ('short_desc',), ('full_desc',)]}),
         ('Дополнительно', {'fields': [('slug',), ('create_date', 'modified')], 'classes': ['collapse']}),
     ]
+
+    form = ProductAdminForm
 
     def make_instock(self, request, queryset):
         updated = queryset.update(status=Product.IN_STOCK)
@@ -55,6 +89,7 @@ class CategoryAdmin(admin.ModelAdmin):
     list_display = ('title', 'desc',)
     list_display_links = ('title',)
     search_fields = ['title', 'desc']
+    form = CategoryAdminForm
 
 
 class FeedbackAdmin(admin.ModelAdmin):
@@ -68,6 +103,8 @@ class FeedbackAdmin(admin.ModelAdmin):
         ('Письмо', {'fields': [('subject',), ('text',)]}),
         ('Дополнительно', {'fields': [('create_date', 'modified', 'status')]})
     ]
+
+    form = FeedbackAdminForm
 
     def make_new(self, request, queryset):
         updated = queryset.update(status=Feedback.NEW)
@@ -91,14 +128,14 @@ class FeedbackAdmin(admin.ModelAdmin):
 
 
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ('order_id', 'data', 'count', 'modified', 'status')
+    list_display = ('order_id', 'data', 'modified', 'status')
     list_display_links = ('order_id',)
     search_fields = ['name', 'modified']
     list_filter = ['status', 'modified']
     readonly_fields = ('create_date', 'modified')
     fieldsets = [
         ('Информация для связи', {'fields': [('name', 'phone'), ('email',)]}),
-        ('Заказ', {'fields': [('product', 'count'), ('text',)]}),
+        ('Заказ', {'fields': [('product',), ('text',)]}),
         ('Дополнительно', {'fields': [('create_date', 'modified', 'status')],
                            'classes': ['collapse']})
     ]

@@ -1,5 +1,5 @@
 # -*- coding:utf-8 -*-
-# from __future__ import unicode_literals
+from __future__ import unicode_literals
 
 from django.db import models
 
@@ -11,9 +11,6 @@ class Category(models.Model):
 
     title = models.CharField(max_length=100, verbose_name='Название категории')
     desc = models.TextField(max_length=300, blank=True, null=True, verbose_name='Описание')
-
-    # возможные поля:
-    # - картинка
 
     def __unicode__(self):
         return self.title
@@ -90,7 +87,6 @@ class Order(models.Model):
         (TREATED, 'Обработанный'),
     )
     name = models.CharField(max_length=100, verbose_name='Имя заказчика')
-    count = models.PositiveSmallIntegerField(default=0, verbose_name='Количество')
     phone = models.CharField(max_length=14, null=True, verbose_name='Номер телефона')
     email = models.EmailField(blank=True, verbose_name='Почта')
     status = models.CharField(max_length=1, choices=ORDER_STATUS, default=NEW, verbose_name='Статус заказа')
@@ -110,11 +106,12 @@ class Order(models.Model):
         rez = ''
         if self.name:
             rez += self.name
-            if self.email:
-                rez += ' | ' + self.email
-                if self.phone:
-                    rez += ' | ' + str(self.phone)
+        if self.email:
+            rez += ' | ' + self.email
+        if self.phone:
+            rez += ' | ' + str(self.phone)
         return rez
+
     data.short_description = 'Пользователь'
 
     def order_id(self):
