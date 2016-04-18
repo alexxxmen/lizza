@@ -11,6 +11,7 @@ class Category(models.Model):
 
     title = models.CharField(max_length=100, verbose_name='Название категории')
     desc = models.TextField(max_length=300, blank=True, null=True, verbose_name='Описание')
+    slug = models.SlugField(max_length=100, unique=True, verbose_name='slug')
 
     def __unicode__(self):
         return self.title

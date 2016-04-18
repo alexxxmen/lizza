@@ -1,7 +1,8 @@
+{% load category_list %}
 {% block head %}{% include 'magazine/includes/head.html' %}{% endblock %}
 {% block body %}
     {% block header %}{% endblock %}
-    {% block sidebar %}{% endblock %}
+    {% block sidebar %}{% category_list %}{% endblock %}
     {% block content %}{% endblock %}
     {% block footer %}{% endblock %}
     {% block endbody %}{% include 'magazine/includes/footer.html' %}{% endblock %}
