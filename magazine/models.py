@@ -38,7 +38,10 @@ class Feedback(models.Model):
     status = models.CharField(max_length=1, choices=FEEDBACK_STATUS, default=NEW, verbose_name='Статус')
 
     def short_text(self):
-        return self.text[:145]+'...'
+        if len(self.text) > 145:
+            return self.text[:145]+'...'
+        else:
+            return self.text
     short_text.short_description = 'Содержимое письма'
 
     def __unicode__(self):

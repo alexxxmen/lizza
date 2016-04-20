@@ -1,1 +1,7 @@
 {% extends 'magazine/index.html' %}
+{% block content %}
+    <div class="container products-main">
+        Тут информация о контактах
+        Можно написать нам через <a href="{% url 'magazine:feedback' %}">форму обратной связи</a>.
+    </div>
+{% endblock %}

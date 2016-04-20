@@ -5,6 +5,7 @@ from magazine import views
 urlpatterns = [
     url(r'^$', views.home, name='home'),
     url(r'^feedback/$', views.feedback, name='feedback'),
+    url(r'^feedback/add/$', views.add_feedback, name='add_feedback'),
     url(r'^about/$', views.about, name='about'),
     url(r'^contacts/$', views.contacts, name='contacts'),
     url(r'^categories/$', views.categories, name='categories'),
