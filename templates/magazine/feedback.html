@@ -2,12 +2,25 @@
 
 {% block content %}
     <div class="container products-main">
-    {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
-    <form action="{% url 'magazine:add_feedback' %}" method="post">
+    <div class="">
+    <form action="{% url 'magazine:feedback' %}" method="post">
         {% csrf_token %}
-        {% for inp in form %}
-            {{ inp.label }}: {{ inp }}<br>
-        {% endfor %}
+        {% comment %}<label class="left">Имя:</label>
+        <div class="center-block"> {{ form.name }}</div><br>
+
+        <label class="left">Тема письма:</label>
+        <div class="center-block"> {{ form.subject }}</div><br>
+
+        <label class="left">Почта:</label>
+        <div class="center-block"> {{ form.email }}</div><br>
+
+        <label class="left">Номер телефона:</label>
+        <div class="center-block"> {{ form.phone }}</div><br>
+
+        <label class="left">Текс письма:</label>
+        <div class="center-block"> {{ form.text }}</div><br>{% endcomment %}
+        {{ form.as_p }}
         <input type="submit" class="btn-success" value="Отправить">
     </form></div>
+    </div>
 {% endblock %}

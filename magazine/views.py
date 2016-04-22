@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
+
 from lizza import settings
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render, get_object_or_404, redirect, HttpResponseRedirect
 from magazine.models import Product, Category
 from django.template.context_processors import csrf
 from magazine.forms import FeedbackForm
@@ -17,22 +18,24 @@ def home(request):
 
 
 def feedback(request):
-    form = FeedbackForm
+    form = {}
+    errors = []
+
+    form = FeedbackForm(request.POST or None)
+
+    if request.method == "POST":
+        if form.is_valid():
+            form.save()
+            return redirect('/')
+
     context = {
         'title': 'Обратная связь - %s' % settings.SITE_NAME,
         'active_menu': 'feedback',
         'form': form,
     }
     context.update(csrf(request))
+
     return render(request, 'magazine/feedback.html', context)
-
-
-def add_feedback(request):
-    if request.POST:
-        form = FeedbackForm(request.POST)
-        if form.is_valid():
-            form.save()
-    return redirect('/')
 
 
 def about(request):

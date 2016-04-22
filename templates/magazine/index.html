@@ -8,16 +8,16 @@
     <div class="products-main">
     {% if products %}
         {% for product in products %}
-            <div class="col-lg-2">
+            <div class="col-lg-3">
             <h4>{{ product.name }}</h4>
             {% autoescape off %}
                 <a href="{% url 'magazine:product_detail' product.slug %}">
                     <img src="{{ MEDIA_URL }}{{ product.img.url }}" width="200" height="150"> </a>
             <p style="font-size: 11px;">Код товара: {{ product.product_code }}</p>
-            <p>{{ product.short_desc }}</p>
+            <p class="text-justify">{{ product.short_desc }}</p>
             <p>Category: <a href="{% url 'magazine:category_slug' product.category.slug %}">{{ product.category.title }}</a></p>
             {% endautoescape %}
-            <button class="btn-primary">Заказать</button>
+            <button class="btn btn-danger">Заказать</button>
             </div>
         {% endfor%}
     {% endif %}
