@@ -1,2 +1,14 @@
 {% extends 'magazine/index.html' %}
 {% block sidebar %}{% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="row">
+            {% for obj in obj_list %}
+                <div class="col-lg-4">
+                <a href="{% url 'magazine:category_slug' obj.slug %}">{{ obj.title }}</a>
+                {{ obj.desc|truncatechars:120|safe }}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

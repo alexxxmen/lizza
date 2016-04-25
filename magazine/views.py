@@ -55,9 +55,11 @@ def contacts(request):
 
 
 def categories(request):
+    obj_list = Category.objects.all()
     context = {
         'title': 'Категории - %s' % settings.SITE_NAME,
         'active_menu': 'categories',
+        'obj_list': obj_list
     }
     return render(request, 'magazine/categories.html', context)
 
