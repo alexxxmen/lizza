@@ -51,8 +51,8 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware'
-    'django.middleware.locale.LocaleMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.locale.LocaleMiddleware'
 ]
 
 ROOT_URLCONF = 'lizza.urls'
@@ -215,6 +215,6 @@ SITE_NAME = 'Lizza'
 
 # Localization
 LANGUAGES = (
-  ('ru', 'Russian'),
-  ('bg', 'Bulgarian'),
+    ('bg', 'Bulgarian'),
+    ('ru', 'Russian'),
 )
