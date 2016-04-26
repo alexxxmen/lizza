@@ -11,10 +11,13 @@ class ProductAdminForm(forms.ModelForm):
         model = Product
         fields = '__all__'
 
-    short_desc = forms.CharField(widget=CKEditorWidget())
+    short_desc = forms.CharField(label='Краткое описание', widget=CKEditorWidget())
+    short_desc_bg = forms.CharField(label='Краткое описание(Bulgarian)', widget=CKEditorWidget())
     # short_desc = forms.CharField(widget=CKEditorUploadingWidget())
-    full_desc = forms.CharField(widget=CKEditorWidget())
-    full_desc = forms.CharField(widget=CKEditorUploadingWidget())
+    full_desc = forms.CharField(label='Полное описание', widget=CKEditorWidget())
+    full_desc = forms.CharField(label='Полное описание' ,widget=CKEditorUploadingWidget())
+    full_desc_bg = forms.CharField(widget=CKEditorUploadingWidget())
+    full_desc_bg = forms.CharField(label='Полное описание(Bulgarian)', widget=CKEditorWidget())
 
 
 class CategoryAdminForm(forms.ModelForm):
@@ -22,8 +25,10 @@ class CategoryAdminForm(forms.ModelForm):
         model = Category
         fields = '__all__'
 
-    desc = forms.CharField(widget=CKEditorWidget())
-    desc = forms.CharField(widget=CKEditorUploadingWidget())
+    desc = forms.CharField(label='Описание', widget=CKEditorWidget())
+    desc = forms.CharField(label='Описание', widget=CKEditorUploadingWidget())
+    desc_bg = forms.CharField(label='Описание(Bulgarian)', widget=CKEditorWidget())
+    desc_bg = forms.CharField(label='Описание(Bulgarian)', widget=CKEditorUploadingWidget())
 
 
 class FeedbackAdminForm(forms.ModelForm):
@@ -31,7 +36,7 @@ class FeedbackAdminForm(forms.ModelForm):
         model = Feedback
         fields = '__all__'
 
-    text = forms.CharField(widget=CKEditorWidget())
+    text = forms.CharField(label='Текст письма', widget=CKEditorWidget())
     # text = forms.CharField(widget=CKEditorUploadingWidget())
 
 
@@ -47,9 +52,10 @@ class ProductAdmin(admin.ModelAdmin):
                    'status', 'count']
     readonly_fields = ('create_date', 'modified')
     fieldsets = [
-        ('Главное', {'fields': [('name', 'img'), ('product_code',)]}),
+        ('Главное', {'fields': [('name', 'img'), ('name_bg', 'product_code',)]}),
         ('Детально', {'fields': [('category', 'status'), ('count',),
-                                 ('short_desc',), ('full_desc',)]}),
+                                 ('short_desc',), ('full_desc',),
+                                 ('short_desc_bg',), ('full_desc_bg',)]}),
         ('Дополнительно', {'fields': [('slug',), ('create_date', 'modified')], 'classes': ['collapse']}),
     ]
 
