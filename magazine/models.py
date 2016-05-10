@@ -11,9 +11,7 @@ class Category(models.Model):
         verbose_name_plural = 'Категории'
 
     title = models.CharField(max_length=100, verbose_name=_('Название категории'))
-    title_bg = models.CharField(max_length=100, verbose_name=_('Название категории(Bulgarian)'))
     desc = models.TextField(max_length=300, blank=True, null=True, verbose_name=_('Описание'))
-    desc_bg = models.TextField(max_length=300, verbose_name=_('Описание(Bulgarian)'))
     slug = models.SlugField(max_length=100, unique=True, verbose_name='slug')
 
     def __unicode__(self):
@@ -66,11 +64,8 @@ class Product(models.Model):
     )
     product_code = models.CharField(max_length=30, null=True, unique=True, verbose_name=_('Код товара'))
     name = models.CharField(max_length=100, unique=True, verbose_name=_('Название'))
-    name_bg = models.CharField(max_length=100, unique=True, verbose_name=_('Название(Bulgarian)'))
     short_desc = models.TextField(max_length=150, verbose_name=_('Краткое описание'))
-    short_desc_bg = models.TextField(max_length=150, verbose_name=_('Краткое описание(Bulgarian)'))
     full_desc = models.TextField(verbose_name=_('Полное описание'))
-    full_desc_bg = models.TextField(verbose_name=_('Полное описание(Bulgarian)'))
     create_date = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
     modified = models.DateTimeField(auto_now=True, verbose_name='Дата изменения')
     count = models.IntegerField(default=0, verbose_name=_('Количество'))
@@ -103,10 +98,7 @@ class Order(models.Model):
     create_date = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
     modified = models.DateTimeField(auto_now=True, verbose_name='Дата изменения')
     text = models.CharField(max_length=300, blank=True, verbose_name=_('Дополнение'))
-    product = models.ManyToManyField(Product,
-                                     related_name='products',
-                                     related_query_name='product',
-                                     verbose_name='Товар(ы)')
+    address = models.CharField(max_length=256, null=True)
 
     def short_text(self):
         return self.text[:145]+'...'
@@ -130,3 +122,15 @@ class Order(models.Model):
 
     def __unicode__(self):
         return 'Order # %s' % self.id
+
+
+class OrderPosition(models.Model):
+    class Meta:
+        verbose_name = 'Order position'
+        verbose_name_plural = 'Order Positions'
+        ordering = ['-count']
+
+    order = models.ForeignKey(Order, related_name='positions')
+    product = models.ForeignKey(Product, related_name='product')
+    count = models.PositiveIntegerField(default=0)
+

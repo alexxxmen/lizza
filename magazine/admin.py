@@ -12,12 +12,9 @@ class ProductAdminForm(forms.ModelForm):
         fields = '__all__'
 
     short_desc = forms.CharField(label='Краткое описание', widget=CKEditorWidget())
-    short_desc_bg = forms.CharField(label='Краткое описание(Bulgarian)', widget=CKEditorWidget())
     # short_desc = forms.CharField(widget=CKEditorUploadingWidget())
     full_desc = forms.CharField(label='Полное описание', widget=CKEditorWidget())
     full_desc = forms.CharField(label='Полное описание' ,widget=CKEditorUploadingWidget())
-    full_desc_bg = forms.CharField(widget=CKEditorUploadingWidget())
-    full_desc_bg = forms.CharField(label='Полное описание(Bulgarian)', widget=CKEditorWidget())
 
 
 class CategoryAdminForm(forms.ModelForm):
@@ -27,8 +24,6 @@ class CategoryAdminForm(forms.ModelForm):
 
     desc = forms.CharField(label='Описание', widget=CKEditorWidget())
     desc = forms.CharField(label='Описание', widget=CKEditorUploadingWidget())
-    desc_bg = forms.CharField(label='Описание(Bulgarian)', widget=CKEditorWidget())
-    desc_bg = forms.CharField(label='Описание(Bulgarian)', widget=CKEditorUploadingWidget())
 
 
 class FeedbackAdminForm(forms.ModelForm):
@@ -52,10 +47,10 @@ class ProductAdmin(admin.ModelAdmin):
                    'status', 'count']
     readonly_fields = ('create_date', 'modified')
     fieldsets = [
-        ('Главное', {'fields': [('name', 'img'), ('name_bg', 'product_code',)]}),
+        ('Главное', {'fields': [('name', 'img'), ('product_code',)]}),
         ('Детально', {'fields': [('category', 'status'), ('count',),
                                  ('short_desc',), ('full_desc',),
-                                 ('short_desc_bg',), ('full_desc_bg',)]}),
+                                 ]}),
         ('Дополнительно', {'fields': [('slug',), ('create_date', 'modified')], 'classes': ['collapse']}),
     ]
 
