@@ -137,7 +137,7 @@ class OrderAdmin(admin.ModelAdmin):
     readonly_fields = ('create_date', 'modified')
     fieldsets = [
         ('Информация для связи', {'fields': [('name', 'phone'), ('email',)]}),
-        ('Заказ', {'fields': [('product',), ('text',)]}),
+        ('Заказ', {'fields': [('text',)]}),
         ('Дополнительно', {'fields': [('create_date', 'modified', 'status')],
                            'classes': ['collapse']})
     ]
