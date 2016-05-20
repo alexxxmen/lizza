@@ -11,6 +11,7 @@ class Category(models.Model):
         verbose_name_plural = 'Категории'
 
     title = models.CharField(max_length=100, verbose_name=_('Название категории'))
+    parent = models.ForeignKey('self', on_delete=models.SET_NULL, blank=True, null=True, verbose_name=_('Родитель'))
     desc = models.TextField(max_length=300, blank=True, null=True, verbose_name=_('Описание'))
     slug = models.SlugField(max_length=100, unique=True, verbose_name='slug')
 
@@ -62,9 +63,9 @@ class Product(models.Model):
         (NOT_AVAILABLE, _('Нет в продаже')),
         (ORDER, _('Под заказ')),
     )
+
     product_code = models.CharField(max_length=30, null=True, unique=True, verbose_name=_('Код товара'))
     name = models.CharField(max_length=100, unique=True, verbose_name=_('Название'))
-    short_desc = models.TextField(max_length=150, verbose_name=_('Краткое описание'))
     full_desc = models.TextField(verbose_name=_('Полное описание'))
     create_date = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
     modified = models.DateTimeField(auto_now=True, verbose_name='Дата изменения')
@@ -73,10 +74,62 @@ class Product(models.Model):
     img = models.ImageField(upload_to='media/images/product', blank=True, verbose_name=_('Картинка'))
     slug = models.SlugField(max_length=100, unique=True, verbose_name='slug')
     status = models.CharField(max_length=1, choices=PRODUCT_STATUS, default=ORDER, verbose_name=_('Статус'))
+    price = models.FloatField(verbose_name=_('Цена'))
+    discount = models.PositiveIntegerField(null=True, blank=True, verbose_name=_('Скидка'))
 
     def __unicode__(self):
         return self.name
 
 
+class Order(models.Model):
+    class Meta:
+        verbose_name = 'Заказ'
+        verbose_name_plural = 'Заказы'
+
+    NEW = 'N'
+    REFUSE = 'R'
+    TREATED = 'T'
+    ORDER_STATUS = (
+        (NEW, _('Новый')),
+        (REFUSE, _('Отказ')),
+        (TREATED, _('Обработанный')),
+    )
+    name = models.CharField(max_length=100, verbose_name=_('Имя заказчика'))
+    phone = models.CharField(max_length=14, null=True, verbose_name=_('Номер телефона'))
+    email = models.EmailField(blank=True, verbose_name=_('Почта'))
+    status = models.CharField(max_length=1, choices=ORDER_STATUS, default=NEW, verbose_name=_('Статус заказа'))
+    create_date = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
+    modified = models.DateTimeField(auto_now=True, verbose_name='Дата изменения')
+    text = models.CharField(max_length=300, blank=True, verbose_name=_('Дополнение'))
+    address = models.CharField(max_length=256, null=True, blank=True)
+
+    def short_text(self):
+        return self.text[:145]+'...'
+    short_text.short_description = _('Дополнение')
+
+    def data(self):
+        rez = ''
+        if self.name: rez += self.name
+        if self.email: rez += ' | ' + self.email
+        if self.phone: rez += ' | ' + str(self.phone)
+        return rez
+
+    data.short_description = _('Пользователь')
+
+    def order_id(self):
+        return 'Заказ № ' + str(self.id)
+    order_id.short_description = _('Номер заказа')
+
+    def __unicode__(self):
+        return 'Order # %s' % self.id
 
 
+class OrderPosition(models.Model):
+    class Meta:
+        verbose_name = 'Order position'
+        verbose_name_plural = 'Order Positions'
+        ordering = ['-count']
+
+    order = models.ForeignKey(Order, related_name='positions')
+    product = models.ForeignKey('magazine.Product', related_name='product')
+    count = models.PositiveIntegerField(default=0)

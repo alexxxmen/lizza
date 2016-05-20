@@ -38,14 +38,6 @@ def feedback(request):
     return render(request, 'magazine/feedback.html', context)
 
 
-def about(request):
-    context = {
-        'title': 'О нас - %s' % settings.SITE_NAME,
-        'active_menu': 'about',
-    }
-    return render(request, 'magazine/about.html', context)
-
-
 def contacts(request):
     context = {
         'title': 'Контакты - %s' % settings.SITE_NAME,

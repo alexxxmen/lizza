@@ -1,6 +1,7 @@
 # -*- coding:utf-8 -*-
 from django.contrib import admin
-from magazine.models import Order, Category, Product, Feedback
+
+from magazine.models import Category, Product, Feedback, Order, OrderPosition
 from django import forms
 from ckeditor.widgets import CKEditorWidget
 from ckeditor_uploader.widgets import CKEditorUploadingWidget
@@ -11,8 +12,6 @@ class ProductAdminForm(forms.ModelForm):
         model = Product
         fields = '__all__'
 
-    short_desc = forms.CharField(label='Краткое описание', widget=CKEditorWidget())
-    # short_desc = forms.CharField(widget=CKEditorUploadingWidget())
     full_desc = forms.CharField(label='Полное описание', widget=CKEditorWidget())
     full_desc = forms.CharField(label='Полное описание' ,widget=CKEditorUploadingWidget())
 
@@ -49,7 +48,7 @@ class ProductAdmin(admin.ModelAdmin):
     fieldsets = [
         ('Главное', {'fields': [('name', 'img'), ('product_code',)]}),
         ('Детально', {'fields': [('category', 'status'), ('count',),
-                                 ('short_desc',), ('full_desc',),
+                                 ('full_desc',), ('price', 'discount')
                                  ]}),
         ('Дополнительно', {'fields': [('slug',), ('create_date', 'modified')], 'classes': ['collapse']}),
     ]
