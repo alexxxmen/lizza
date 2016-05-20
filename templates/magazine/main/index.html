@@ -1,0 +1,13 @@
+{% extends 'magazine/index.html' %}
+{% block content %}
+{% include 'magazine/includes/product_filters.html' %}
+<div class="content">
+{% if products %}
+    {% for product in products %}
+    {% include 'magazine/product/preview.html' %}
+    {% endfor%}
+{% else %}
+<span class="nothing">Sorry, nothing to show you now :( May be if you try later.</span>
+{% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends 'magazine/index.html' %}
+{% load extra_items %}
+{% block content %}
+<div class="content">
+    <div id="item-details">
+        <div id="item-title-blk"><span id="item-title">{{ product.name }}</span></div>
+{% autoescape off %}<div id="item-img"><img src="{{ MEDIA_URL }}{{ product.img.url }}" alt="{{ product.name }}"></div>{% endautoescape %}
+        <div id="right block">
+            {% if not product.discount %}<div id="item-price-blk">Цена: <span id="item-price"> {{ product.price }} {{ currency }}</span></div>
+            {% else %}<div id="item-discount-price">Цена: <span id="item-price">{{ product.price }} {{ currency }}</span>
+            - <span id="item-discount">{{ product.discount }}%</span> = <span id="total-discount-price">{{ product.discount_price }} {{ currency }}</span></div>
+            {% endif %}
+            <div id="item-button">
+                <button class=".add_item" data-id="{{ product.id }}" data-title="{{ product.title }}"
+                data-kod="{{ product.product_code }}" data-discount="{{ product.discount }}"
+                data-totalprice="{{ product.discount_price }}">В корзину</button>
+            </div>
+        </div>
+        <div id="item-description-blk">
+            Информация о товаре
+            <div id="item-description">
+                <p>{{ product.description|safe }}</p>
+            </div>
+        </div>
+    </div>
+    <div id="extra-items">
+    {% extra_items %}
+    </div>
+</div>
+{% endblock %}

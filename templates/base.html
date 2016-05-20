@@ -1,11 +1,10 @@
 {% load category_list static %}
-{% block head %}{% include 'magazine/includes/head.html' %}{% endblock %}
+{% block head %}{% endblock %}
 {% block body %}
-    {% block header %}{% endblock %}
-    {% block jumbotron %}{% include 'magazine/includes/jumbotron.html' %}{% endblock %}
-    {% block sidebar %}{% category_list %}{% endblock %}
-    {% block content %}{% endblock %}
-    {% block footer %}{% endblock %}
-    {% block endbody %}
-    {% endblock %}
-{% endblock %}
+    {% block header %}{% endblock header %}
+    {% block jumbotron %}{% endblock jumbotron %}
+    {% block sidebar %}{% endblock sidebar %}
+    {% block content %}{% endblock content %}
+    {% block footer %}{% endblock footer %}
+    {% block endbody %}{% endblock endbody%}
+{% endblock body %}

@@ -1,0 +1,12 @@
+<body>
+<div class="container">
+    <div id="top-search-blk"><input id="search-input" value autocomplete="off" placeholder="Search">
+        <button type="submit" class="btn-search"></button>
+    </div>
+        <h1 id="top-sitename">{{ sitename }}</h1>
+    <div id="top-cart-link-blk">
+        <a href="{% url 'magazine:cart' %}">
+        <img src="{% static 'static/images/top-cart-icon.png' %}"></a>
+        <div id="cart-item-count"><span></span></div>
+    </div>
+{% include 'magazine/includes/top_menu.html' %}</div>

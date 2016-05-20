@@ -1,29 +1,11 @@
 {% extends 'base.html' %}
-{% load static %}
-{% block header %}
-    <div class="container">
-    <h1 id="top-title" class="muted">Lizza</h1>
-    {% include 'magazine/includes/top_menu.html' %}</div>
-{% endblock %}
-{% block content %}
-    <div class="products-main">
-    {% if products %}
-        {% for product in products %}
-            <div class="item-box">
-            <h4 class="item_title">{{ product.name }}</h4>
-            {% autoescape off %}
-                <a href="{% url 'magazine:product_detail' product.slug %}">
-                    <img src="{% if product.img %}{{ MEDIA_URL }}{{ product.img.url }}{% else %}
-                    {% static 'static/images/product-default.jpeg' %}{% endif %}" width="200" height="150"> </a>
-            <p style="font-size: 11px;">Код товара: {{ product.product_code }}</p>
-                <span class="item-price">{{ product.price }}</span>{% if product.discount %} <span class="item-discount">{{ product.discount }} %</span>{% endif %}
-            {% endautoescape %}
-            <button class="cart-btn" data-id="{{ product.id }}" data-title="{{ product.title }}"
-                    data-kod="{{ product.product_code }}">В корзину</button>
-            </div>
-        {% endfor%}
-    {% endif %}
-    </div>
-{% endblock %}
-{% block footer %}
-{% endblock %}
+{% load category_list %}
+{% block head %}{% include 'magazine/includes/head.html' %}{% endblock head %}
+{% block header %}{% include 'magazine/includes/header.html' %}{% endblock header %}
+{% block jumbotron %}{% include 'magazine/includes/jumbotron.html' %}{% endblock jumbotron %}
+{% block sidebar %}{% category_list %}{% endblock sidebar %}
+{% block footer %}{% include 'magazine/includes/footer.html' %}{% endblock %}
+{% block endbody %}
+    </body>
+</html>
+{% endblock endbody%}

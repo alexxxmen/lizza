@@ -1,0 +1,13 @@
+{% extends 'magazine/index.html' %}
+{% block jumbotron %}{% endblock %}
+{% block sidebar %}{% endblock %}
+{% block content %}
+<div class="content-full">
+    <div class="center">
+        <h1>Все категории</h1>
+    </div>
+{% for category in categories %}
+{% include 'magazine/category/preview.html' %}
+{% endfor %}
+</div>
+{% endblock %}

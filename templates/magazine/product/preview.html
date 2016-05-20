@@ -1,0 +1,24 @@
+<div class="item-box">
+    <div class="item-title-blk>"><h4 class="item-title">{{ product.name }}</h4></div>
+    {% autoescape off %}
+    <div class="item-img-blk">
+        <a href="{% url 'magazine:product_detail' product.slug %}">
+        <img src="{% if product.img %}{{ MEDIA_URL }}{{ product.img.url }}{% else %}
+        {% static 'static/images/product-default.jpeg' %}{% endif %}" width="200" height="150"> </a>
+    </div>
+    <div class="item-cod-blk"> <span>Код товара: {{ product.product_code }}</span></div>
+    {% if not product.discount %}
+    <div class="item-price-blk">
+        Цена: <span class="item-price">{{ product.price }} {{ currency }}</span>
+    </div>
+    {% else %}
+    <div class="item-price-discount-blk">
+        Цена: <span class="item-price">{{ product.price }} {{ currency }}</span> - <span class="item-discount">{{ product.discount }}%</span> = <span class="item-discount-price">{{ product.discount_price }} {{ currency }}</span>
+    </div>
+    {% endif %}
+    {% endautoescape %}
+    <button class=".add_item" data-id="{{ product.id }}" data-title="{{ product.title }}"
+    data-kod="{{ product.product_code }}" data-discount="{{ product.discount }}"
+    data-totalprice="{{ product.discount_price }}">В корзину</button>
+</div>
+

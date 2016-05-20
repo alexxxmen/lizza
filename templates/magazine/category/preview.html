@@ -1,0 +1,5 @@
+<div class="category-box">
+    <div class="category-title"><span><a href="{% url 'magazine:category_slug' category.slug %}">{{ category.title }}</a></span></div>
+    <div class="category-desc">{{ category.description|slice:":2" }}</div>
+    <span><a href="{% url 'magazine:category_slug' category.slug %}">Просмотреть все</a></span>
+</div>

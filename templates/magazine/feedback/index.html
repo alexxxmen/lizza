@@ -1,0 +1,30 @@
+{% extends 'magazine/index.html' %}
+{% block jumbotron %}{% endblock %}
+{% block sidebar %}{% endblock %}
+{% block content %}
+<div class="content full">
+   <div class="feedback-blk">
+   <h2>Вы можете связаться с нами отправив письмо. Для этого заполните форму ниже.</h2>
+    <div class="feedback-form-blk">
+    <form action="{% url 'magazine:feedback' %}" method="post">
+        {% csrf_token %}
+        <label id="name-label" class="left">Имя:</label>
+        <div id="name-blk" class="center-block"> {{ form.name }}</div>
+
+        <label id="subject-label" class="left">Тема письма:</label>
+        <div id="subject-blk" class="center-block"> {{ form.subject }}</div>
+
+        <label id="email-label" class="left">Почта:</label>
+        <div id="email-blk" class="center-block"> {{ form.email }}</div>
+
+        <label id="phone-label" class="left">Номер телефона:</label>
+        <div id="phone-blk" class="center-block"> {{ form.phone }}</div>
+
+        <label id="text-label" class="left">Текс письма:</label>
+        <div id="text-blk" class="center-block"> {{ form.text }}</div>
+
+        <button type="submit" class="feedback-btn">Отправить</button>
+    </form></div>
+    </div>
+</div>
+{% endblock %}

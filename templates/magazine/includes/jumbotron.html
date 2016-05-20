@@ -1,0 +1,10 @@
+{#{% load static %}#}
+<div class="bxslider">
+    <ul>
+        {% autoescape off %}
+        {% for slide in slides %}
+        <li><img src="{{ MEDIA_URL }}{{ slide.img.url }}" alt=""></li>
+        {% endfor %}
+        {% endautoescape %}
+    </ul>
+</div>
