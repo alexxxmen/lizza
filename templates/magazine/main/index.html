@@ -7,7 +7,24 @@
     {% include 'magazine/product/preview.html' %}
     {% endfor%}
 {% else %}
-<span class="nothing">Sorry, nothing to show you now :( May be if you try later.</span>
+
+{% endif %}
+{% if products.object_list and products.paginator.num_pages > 1 %}
+    <div class="pagination">
+        <span class="step-links">
+            {% if products.has_previous %}
+                <a href= "?page={{ products.previous_page_number }}">Предыдущие</a>
+            {% endif %}
+
+            <span class="current">
+                Страница {{ products.number }} of {{ products.paginator.num_pages }}
+            </span>
+
+            {% if products.has_next %}
+                <a href="?page={{ products.next_page_number }}">Следующие</a>
+            {% endif %}
+        </span>
+    </div>
 {% endif %}
 </div>
 {% endblock %}

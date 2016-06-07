@@ -1,9 +1,8 @@
 {% extends 'base.html' %}
-{% load category_list %}
 {% block head %}{% include 'magazine/includes/head.html' %}{% endblock head %}
 {% block header %}{% include 'magazine/includes/header.html' %}{% endblock header %}
 {% block jumbotron %}{% include 'magazine/includes/jumbotron.html' %}{% endblock jumbotron %}
-{% block sidebar %}{% category_list %}{% endblock sidebar %}
+{% block sidebar %}{% include 'magazine/includes/sidebar.html' %}{% endblock sidebar %}
 {% block footer %}{% include 'magazine/includes/footer.html' %}{% endblock %}
 {% block endbody %}
     </body>

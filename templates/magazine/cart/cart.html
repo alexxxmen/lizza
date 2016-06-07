@@ -1,0 +1,78 @@
+{% extends "magazine/index.html" %}
+{% load static %}
+
+{% block content %}
+    <div class="container">
+      <!-- row of columns -->
+      <div class="row">
+        <div class="col-md-4 sidebar">
+            <h3>Categories</h3>
+            <ul>
+                <li {% if not category %}class="selected"{% endif %}>
+                    <a href="{% url "magazine:home" %}">All</a>
+                </li>
+            {% for c in categories %}
+                <li {% if category.slug == c.slug %}class="selected"{% endif %}>
+                    <a href="{{ c.get_absolute_url }}">{{ c.name }}</a>
+                </li>
+            {% endfor %}
+            </ul>
+        </div>
+
+    <div id="main" class="col-md-8 product-list">
+    
+    <h1>Your shopping cart</h1>
+    <table class="cart">
+        <thead>
+            <tr>
+                <th>Image</th>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Remove</th>
+                <th>Unit price</th>
+                <th>Discount</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for item in cart %}
+            {% with product=item.product %}
+            <tr>
+                <td>
+                    <a href="{{ product.get_absolute_url }}">
+                        <img src="{% if product.img_preview %}{{ product.img_preview.url }}{% else %}{% static "img/no_image.png" %}{% endif %}">
+                    </a>
+                </td>
+                <td>{{ product.name }}</td>
+                <td>
+                    <form action="{% url "magazine:cart_add" product.id %}" method="post">
+                        {{ item.update_count_form.count }}
+                        {{ item.update_count_form.update }}
+                        <input type="submit" value="Update">
+                        {% csrf_token %}
+                    </form>
+                </td>
+                <td><a href="{% url "magazine:cart_remove" product.id %}">Remove</a></td>
+                <td class="num">{{ item.price }}</td>
+                <td class="num">{% if item.discount %}{{ item.discount }}%{% else %}{% endif %}</td>
+                <td class="num">{{ item.total_price }} {{ currency }}</td>
+            </tr>
+            {% endwith %}
+        {% endfor %}
+        <tr class="total">
+            <td>Total</td>
+            <td colspan="5"></td>
+            <td class="num">{{ cart.get_total_price }} {{ currency }}</td>
+        </tr>
+        </tbody>
+    </table>
+    <p class="text-right">
+        <a href="{% url "magazine:home" %}" class="button light">Continue shopping</a>
+        <a href="{% url "magazine:order_create" %}" class="button">Checkout</a>
+    </p>
+
+ </div>
+</div>
+<hr>
+
+{% endblock %}

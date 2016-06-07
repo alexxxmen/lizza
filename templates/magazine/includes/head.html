@@ -4,20 +4,10 @@
 <head>
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
-    <title>{% block title %}{{ page_title }} - {{ sitename }}{% endblock %}</title>
-    <link rel="stylesheet" href="{% static 'static/css/style.css' %}" type="text/css">
-    <link rel="stylesheet" href="{% static 'static/css/jquery.bxslider.css' %}" type="text/css">
+    <title>{% block title %}{{ title }}{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/jquery.bxslider.css' %}" type="text/css">
     <script src="{% static 'js/jquery-1.11.2.min.js' %}"></script>
-    <script src="{% static 'js/jquery.bxslider.min.js' %}"></script>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $('.bxslider').bxSlider({
-                mode: 'fade',
-                auto: true,
-                pause: 10000
-            });
-        });
-    </script>
     <!--[if lt IE 9]>
     <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->

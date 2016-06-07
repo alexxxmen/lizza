@@ -1,12 +1,13 @@
+{% load static %}
 <body>
 <div class="container">
     <div id="top-search-blk"><input id="search-input" value autocomplete="off" placeholder="Search">
-        <button type="submit" class="btn-search"></button>
+        <button type="submit" class="btn-search">S</button>
     </div>
-        <h1 id="top-sitename">{{ sitename }}</h1>
+        <h1 id="top-sitename"><a href="http://127.0.0.1:8000">{{ sitename }}</a></h1>
     <div id="top-cart-link-blk">
-        <a href="{% url 'magazine:cart' %}">
-        <img src="{% static 'static/images/top-cart-icon.png' %}"></a>
+        <a href="{% url 'magazine:cart_detail' %}">
+        <img src="{% static 'images/top-cart-icon.png' %}"></a>
         <div id="cart-item-count"><span></span></div>
     </div>
-{% include 'magazine/includes/top_menu.html' %}</div>
+{% include 'magazine/includes/top_menu.html' %}

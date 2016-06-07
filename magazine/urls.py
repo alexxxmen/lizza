@@ -9,6 +9,10 @@ urlpatterns = [
     url(r'^contacts/$', views.contacts, name='contacts'),
     url(r'^categories/$', views.categories, name='categories'),
     url(r'^categories/(?P<slug>[\w-]+)/$', views.category_slug, name='category_slug'),
-    url(r'^product/(?P<slug>[\w-]+)/$', views.product_detail, name='product_detail'),
+    url(r'^item/(?P<id>\d+)/(?P<slug>[\w-]+)/$', views.product_detail, name='product_detail'),
+    url(r'^cart/$', views.cart_detail, name="cart_detail"),
+    url(r'^cart/add/(?P<product_id>\d+)/$', views.cart_add, name='cart_add'),
+    url(r'^cart/remove/(?P<product_id>\d+)/$', views.cart_remove, name='cart_remove'),
+    url(r'^create/$', views.order_create, name='order_create'),
 
 ]

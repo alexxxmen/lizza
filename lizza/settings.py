@@ -1,3 +1,4 @@
+# -*- coding:utf-8 -*-
 """
 Django settings for lizza project.
 
@@ -39,8 +40,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'magazine',
+
     'ckeditor',
     'ckeditor_uploader',
+    'mptt',
+    'imagekit',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -69,6 +73,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'magazine.processors.context_processors.cart',
             ],
         },
     },
@@ -151,12 +156,13 @@ CKEDITOR_CONFIGS = {
             ['Source', '-', 'Bold', 'Italic']
         ],
         'toolbar_YouCustomToolbarConfig': [
-            {'name': 'document', 'items': ['Source', '-', 'Save', 'NewPage', 'Preview', 'Print', '-', 'Templates']},
+            {'name': 'document', 'items': ['Source', '-', 'Save', 'NewPage', '-', 'Templates']},
             {'name': 'clipboard', 'items': ['Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo']},
             {'name': 'editing', 'items': ['Find', 'Replace', '-', 'SelectAll']},
             {'name': 'forms',
-             'items': ['Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton',
-                       'HiddenField']},
+             'items': ['HiddenField']},
+            {'name': 'insert',
+             'items': ['Image', 'Table', 'HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak']},
             '/',
             {'name': 'basicstyles',
              'items': ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat']},
@@ -165,19 +171,15 @@ CKEDITOR_CONFIGS = {
                        'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl',
                        'Language']},
             {'name': 'links', 'items': ['Link', 'Unlink', 'Anchor']},
-            {'name': 'insert',
-             'items': ['Image', 'Flash', 'Table', 'HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak', 'Iframe']},
             '/',
             {'name': 'styles', 'items': ['Styles', 'Format', 'Font', 'FontSize']},
             {'name': 'colors', 'items': ['TextColor', 'BGColor']},
-            {'name': 'tools', 'items': ['Maximize', 'ShowBlocks']},
+            {'name': 'tools', 'items': ['ShowBlocks']},
             {'name': 'about', 'items': ['About']},
-            '/',  # put this to force next toolbar on new line
             {'name': 'youcustomtools', 'items': [
                 # put the name of your editor.ui.addButton here
                 'Preview',
                 'Maximize',
-
             ]},
         ],
         'toolbar': 'YouCustomToolbarConfig',  # put selected toolbar config here
@@ -209,12 +211,11 @@ CKEDITOR_CONFIGS = {
 }
 # END CKEDITOR SETTINGS
 
-# CUSTOME SETTINGS
+# CUSTOM SETTINGS
 
 SITE_NAME = 'Lizza'
+CURRENCY = 'грн.'
 
-# Localization
-LANGUAGES = (
-    ('bg', 'Bulgarian'),
-    ('ru', 'Russian'),
-)
+# CART
+
+CART_SESSION_ID = 'Jie799Jasdj'

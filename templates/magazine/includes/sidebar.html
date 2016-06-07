@@ -1,0 +1,17 @@
+{% load mptt_tags %}
+<div id="sidebar-blk">
+    <div class="categories"> <!-- Block Categories -->
+        <ul class="side-categories">
+            {% recursetree categories %}
+                <li class="cat-item">
+                    <a href="{{ node.get_absolute_url }}">{{ node.name }}</a>
+                    {% if not node.is_leaf_node %}
+                        <ul class="children">
+                            {{ children }}
+                        </ul>
+                    {% endif %}
+                </li>
+            {% endrecursetree %}
+        </ul>
+    </div> <!-- End block categories-->
+</div>

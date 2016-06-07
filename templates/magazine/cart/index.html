@@ -8,7 +8,7 @@
     </div>
     <div id="cart-blk"></div>
     <div class="cart-form-blk">
-        <form action="{% url 'magazine:cart/final' %}" method="post">
+        <form action="{% url 'magazine:cart' %}" method="post">
             {% csrf_token %}
             {{ form.as_p }}
             <button type="submit">Заказать</button>

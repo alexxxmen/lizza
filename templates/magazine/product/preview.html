@@ -1,11 +1,13 @@
+{% load static %}
 <div class="item-box">
-    <div class="item-title-blk>"><h4 class="item-title">{{ product.name }}</h4></div>
+    <div class="item-title-blk>"><h4 class="item-title"><a href="{{ product.get_absolute_url }}">{{ product.name }}</a></h4></div>
     {% autoescape off %}
     <div class="item-img-blk">
-        <a href="{% url 'magazine:product_detail' product.slug %}">
-        <img src="{% if product.img %}{{ MEDIA_URL }}{{ product.img.url }}{% else %}
-        {% static 'static/images/product-default.jpeg' %}{% endif %}" width="200" height="150"> </a>
+        <a href="{{ product.get_absolute_url }}">
+        <img src="{% if product.img_preview %}{{ MEDIA_URL }}{{ product.img_preview.url }}{% else %}
+        {% static 'images/product-default.jpeg' %}{% endif %}"> </a>
     </div>
+    <div class="item-status-blk"> <span>{{ product.get_status_display }}</span></div>
     <div class="item-cod-blk"> <span>Код товара: {{ product.product_code }}</span></div>
     {% if not product.discount %}
     <div class="item-price-blk">
@@ -17,8 +19,10 @@
     </div>
     {% endif %}
     {% endautoescape %}
-    <button class=".add_item" data-id="{{ product.id }}" data-title="{{ product.title }}"
-    data-kod="{{ product.product_code }}" data-discount="{{ product.discount }}"
-    data-totalprice="{{ product.discount_price }}">В корзину</button>
+     <form action="{% url "magazine:cart_add" product.id %}" method="post">
+            {{ cart_product_form }}
+            {% csrf_token %}
+            <input type="submit" class="btn btn-primary" value="В корзину">
+    </form>
 </div>
 

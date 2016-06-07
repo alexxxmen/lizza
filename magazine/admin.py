@@ -41,9 +41,9 @@ class ProductAdmin(admin.ModelAdmin):
                     'create_date', 'category', 'modified', 'status')
     list_display_links = ('name',)
     search_fields = ['name', 'product_code', 'create_date',
-                     'modified', 'status', 'category__title']
-    list_filter = ['create_date', 'category__title', 'modified',
-                   'status', 'count']
+                     'modified', 'status', 'category__name']
+    list_filter = ['create_date', 'category__name', 'modified',
+                   'status']
     readonly_fields = ('create_date', 'modified')
     fieldsets = [
         ('Главное', {'fields': [('name', 'img'), ('product_code',)]}),
@@ -86,10 +86,10 @@ class ProductAdmin(admin.ModelAdmin):
 
 
 class CategoryAdmin(admin.ModelAdmin):
-    prepopulated_fields = {'slug': ('title',)}
-    list_display = ('title', 'desc',)
-    list_display_links = ('title',)
-    search_fields = ['title', 'desc']
+    prepopulated_fields = {'slug': ('name',)}
+    list_display = ('name', 'desc',)
+    list_display_links = ('name',)
+    search_fields = ['name', 'desc']
     form = CategoryAdminForm
 
 
@@ -128,18 +128,27 @@ class FeedbackAdmin(admin.ModelAdmin):
     actions = ['make_new', 'make_treated']
 
 
+class OrderPositionInline(admin.TabularInline):
+    model = OrderPosition
+    raw_id_fields = ['product']
+    # fields = ['product', 'price', 'discount', 'count']
+
+
 class OrderAdmin(admin.ModelAdmin):
     list_display = ('order_id', 'data', 'modified', 'status')
     list_display_links = ('order_id',)
-    search_fields = ['name', 'modified']
+
+    search_fields = ['first_name', 'last_name', 'modified']
     list_filter = ['status', 'modified']
-    readonly_fields = ('create_date', 'modified')
+    readonly_fields = ('created', 'modified')
+
     fieldsets = [
-        ('Информация для связи', {'fields': [('name', 'phone'), ('email',)]}),
-        ('Заказ', {'fields': [('text',)]}),
-        ('Дополнительно', {'fields': [('create_date', 'modified', 'status')],
-                           'classes': ['collapse']})
+        ('Информация для связи', {'fields': [('first_name', 'last_name'), ('email', 'phone')]}),
+        ('Заказ', {'fields': [('text', 'status')]}),
+        ('Дополнительно', {'fields': [('created', 'modified')]})
     ]
+
+    inlines = [OrderPositionInline]
 
     def make_new(self, request, queryset):
         updated = queryset.update(status=Order.NEW)
@@ -170,6 +179,7 @@ class OrderAdmin(admin.ModelAdmin):
     make_treated.short_description = 'Пометить как обработанный'
 
     actions = ['make_new', 'make_refuse', 'make_treated']
+
 
 admin.site.register(Order, OrderAdmin)
 admin.site.register(Product, ProductAdmin)
